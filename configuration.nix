@@ -21,7 +21,7 @@
       dates = [ "02:45" ];
     };
   };
-
+	
   # Use latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -46,6 +46,19 @@
   # Flatpak
   services.flatpak.enable = true;
 
+  # mpd service
+  services.mpd = {
+    enable = true;
+    musicDirectory = "/home/arslaana/rmpc_cache";
+    extraConfig = ''
+      bind_to_address = "localhost"
+      filesystem = "enabled"
+    '';  
+  };
+
+  # enable sound on pulseaudio
+  services.pulseaudio.systemWide = true;
+  
   # xdg desktop portals
   xdg.portal = {
     enable = true;
@@ -181,7 +194,7 @@
   };
 
   # Default shell
-  users.defaultUserShell = pkgs.bash;
+  users.defaultUserShell = pkgs.zsh;
 
   # Neovim
   programs.neovim = {
@@ -189,11 +202,20 @@
     defaultEditor = true;
   };
 
+  # zsh shell
+  programs.zsh.enable = true;
+
   # System packages
   environment.systemPackages = with pkgs; [
     alacritty
     dmenu
+    yt-dlp
+    python314
+    clang
+    ffmpeg
+    localsend
     git
+    rmpc
     fzf
     eza
     fastfetch
@@ -210,6 +232,7 @@
     wget
     feh
     htop
+    btop-rocm
   ];
   services.tumbler.enable = true;
 
